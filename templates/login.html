@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block main %}
+    <div class="middle-container">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <!-- <a href="register" class="register-button">Register</a> -->
+        <button class="register-button" onclick="location.href='register'">Register</button>
+
+        {% if error %}
+        <div>
+            <p style="color: red;">{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock%}

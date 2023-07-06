@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block script %}
+<script src="../static/revise_script.js"></script>
+{% endblock %}
+{% block main %}
+    <div class="middle-container">
+        <h1>Revise</h1>
+        <div class="words-info">
+            <div id="n-words"><br></div>
+            <div id="words-list"><a href="/words">Manage words</a></div>
+        </div>
+        <input type="text" id="user-answer" placeholder="Enter word matching the definition">
+        <div class="buttons">
+            <button id="submit-answer">Submit Answer</button>
+            <button id="get-word">Get Word</button>
+            <button id="logout-button">Logout</button>
+        </div>
+        <div id="message"><br></div>
+        <div id="word-definition"></div>
+    </div>
+{% endblock%}

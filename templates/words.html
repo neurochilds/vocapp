@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block script %}
+<script src="../static/words_script.js"></script>
+{% endblock %}
+{% block main %}
+    <div class="wide-middle-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Box Number</th>
+                    <th>Last Reviewed</th>
+                    <th>Next Review</th>
+                    <th>Delete Word</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for word in words %}
+                <tr>
+                    <td>{{ word['word'] }}</td>
+                    <td>{{ word['box_number'] }}</td>
+                    <td>{{ word['last_reviewed'] }}</td>
+                    <td>{{ word['next_review'] }}</td>
+                    <td class="delete-cell"><button class="delete-button" value={{word.word}}><b>Delete</b></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock%}

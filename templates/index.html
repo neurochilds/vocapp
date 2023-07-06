@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block script %}
+<script src="../static/dictionary_script.js"></script>
+{% endblock %}
+{% block main %}
+    <div class="middle-container">
+        <h1>Dictionary</h1>
+        <div class="words-info">
+            <div id="n-words"><br></div>
+            <div id="words-list"><a href="/words">Manage words</a></div>
+        </div>
+        <input type="text" id="word" placeholder="Enter a word to look up">
+        <div class="buttons">
+            <button id="lookup-button" disabled>Lookup Word</button>
+            <button id="revise-button" onclick="location.href='/revise'" disabled>Revise</button>
+            <button id="logout-button">Logout</button>
+        </div>
+        <div id="message"></div>
+        <div id="definitions"></div>
+    </div>
+{% endblock%}
