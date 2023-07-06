@@ -3,6 +3,7 @@ from fastapi import HTTPException, Security, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer # Delete
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
+import os
 
 '''
 HTTPException used to raise errors for invalid tokens which the framework handles to return an error to the user with the provided status code and errors message.
@@ -21,7 +22,7 @@ Datetimw used for setting issue and expiry times of the jwt.
 class AuthHandler():
     # security = HTTPBearer()
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    secret = 'SECRET'
+    secret = os.getenv('JWT_SECRET')
 
     def get_password_hash(self, password):
         '''
