@@ -1,0 +1,8 @@
+fastapi
+passlib
+sqlmodel
+starlette
+jinja2
+PyDictionary
+pydantic
+python-jwt

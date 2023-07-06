@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, Request, Depends, HTTPException, Response, Form
 from auth import AuthHandler
 from schemas import AuthDetails, WordDetails, DeleteWord
@@ -6,7 +5,7 @@ import string
 from helpers import clean_dict, update_box, days_hours_mins
 
 from models import User, Word, engine
-from sqlmodel import Session, select, desc, asc
+from sqlmodel import Session, select
 from starlette.status import HTTP_403_FORBIDDEN
 
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -204,7 +203,7 @@ def words(request: Request, username = Depends(auth_handler.auth_wrapper)):
         if user:
             words = session.exec(select(Word)
                 .where(Word.user_id == user.id)
-                .order_by(Word.next_review_date, asc(Word.last_reviewed_date))
+                .order_by(Word.next_review_date, (Word.last_reviewed_date))
                 ).all()
             
             for word in words:
