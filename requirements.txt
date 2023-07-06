@@ -5,6 +5,6 @@ starlette
 jinja2
 PyDictionary
 pydantic
-jwt
+PyJWT
 uvicorn
 python-multipart
