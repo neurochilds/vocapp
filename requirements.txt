@@ -6,3 +6,4 @@ jinja2
 PyDictionary
 pydantic
 python-jwt
+uvicorn
