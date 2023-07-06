@@ -5,5 +5,5 @@ starlette
 jinja2
 PyDictionary
 pydantic
-python-jwt
+jwt
 uvicorn
