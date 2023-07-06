@@ -8,4 +8,3 @@ pydantic
 PyJWT
 uvicorn
 python-multipart
-os
