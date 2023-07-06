@@ -6,7 +6,7 @@ from helpers import clean_dict, update_box, days_hours_mins
 
 from models import User, Word, engine
 from sqlmodel import Session, select
-from starlette.status import HTTP_403_FORBIDDEN
+from starlette.status import HTTP_403_FORBIDDEN, HTTP_401_UNAUTHORIZED
 
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -25,6 +25,12 @@ auth_handler = AuthHandler()
 
 
 @app.exception_handler(HTTP_403_FORBIDDEN)
+async def forbidden_exception_handler(request: Request, exc: HTTPException):
+    # Redirect users to login page if they try to access url that requires valid token
+    return RedirectResponse(url='/login')
+
+
+@app.exception_handler(HTTP_401_UNAUTHORIZED)
 async def forbidden_exception_handler(request: Request, exc: HTTPException):
     # Redirect users to login page if they try to access url that requires valid token
     return RedirectResponse(url='/login')
