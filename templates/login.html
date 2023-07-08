@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block main %}
     <div class="middle-container">
+        <div id="intro"> 
+            Vocapp is a vocabulary learning app that utilises the principles of <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank">spaced repetition learning</a> to help you memorise new words. Simply lookup the definition of a word in the dictionary to add it to your collection.
+        </div>
         <h2>Login</h2>
         <form action="/login" method="post">
             <input type="text" name="username" placeholder="Username" required>
