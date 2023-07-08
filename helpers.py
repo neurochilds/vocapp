@@ -1,4 +1,29 @@
 from datetime import datetime, timedelta
+from mailjet_rest import Client
+
+def send_email(recipient_email, subject, text_content):
+    api_key = '9cdb32e6feedab2d348d3fb7331614be'  # replace with your Mailjet API Key
+    api_secret = '09b789bb544798275ccc958b6d71a961'  # replace with your Mailjet Secret Key
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": "childsy123@gmail.com",  # replace with your sender email
+                    "Name": "Vocapp"  # replace with your sender name
+                },
+                "To": [
+                    {
+                        "Email": recipient_email
+                    }
+                ],
+                "Subject": subject,
+                "TextPart": text_content,
+            }
+        ]
+    }
+    return mailjet.send.create(data=data)
 
 
 def clean_dict(dictionary: dict):

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, Depends, HTTPException, Response, Form
 from auth import AuthHandler
 from schemas import AuthDetails, WordDetails, DeleteWord
 import string
-from helpers import clean_dict, update_box, days_hours_mins
+from helpers import clean_dict, update_box, days_hours_mins, send_email
 
 from models import User, Word, engine
 from sqlmodel import SQLModel, Session, select
@@ -242,3 +242,12 @@ def delete(word: DeleteWord, username = Depends(auth_handler.auth_wrapper)):
                return {'delete_successful': False, 'error': 'Word not found'}
        else:
            return {'delete_successful': False, 'error': 'User not found'}
+       
+def check_all():
+    with Session(engine) as session:
+        users = session.exec(select(Word)).where(Word.next_review_date < datetime.utcnow())
+        if users:
+            for user in users:
+                user_data = session.exec(select(User).where(User.id == user.user_id))
+                email = user_data.email
+                send_email(email, subject='Words to revise', text_content='You have words to revise on Vocapp!')

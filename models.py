@@ -8,6 +8,7 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str = Field(index=True) # creates an index for the username field for faster lookup time
     password_hash: str
+    email: str
 
     words: List['Word'] = Relationship(back_populates='user')
 
