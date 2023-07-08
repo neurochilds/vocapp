@@ -5,7 +5,7 @@ import string
 from helpers import clean_dict, update_box, days_hours_mins
 
 from models import User, Word, engine
-from sqlmodel import Session, select
+from sqlmodel import SQLModel, Session, select
 from starlette.status import HTTP_403_FORBIDDEN, HTTP_401_UNAUTHORIZED
 
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -15,6 +15,8 @@ import json
 from PyDictionary import PyDictionary
 from datetime import datetime, timedelta
 
+
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static") # mount static files

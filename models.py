@@ -1,6 +1,7 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship, create_engine
 from datetime import datetime
+import os
 
 
 class User(SQLModel, table=True):
@@ -21,7 +22,7 @@ class Word(SQLModel, table=True):
     user_id: int = Field(default=None, foreign_key="user.id")
     user: Optional[User] = Relationship(back_populates='words')
 
-sqlite_file_name = "vocapp_database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-engine = create_engine(sqlite_url)
-SQLModel.metadata.create_all(engine)
+# sqlite_file_name = "vocapp_database.db"
+# sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+engine = create_engine(os.getenv("DATABASE_URL"))
