@@ -19,7 +19,6 @@ from datetime import datetime, timedelta
 
 '''
 TO DO:
-- Implement unsubscribe function
 - Implement change email function
 - Change secret key and API to environment variables, upload to railway.app
 - Check it works with 1 min delay...if so, change to 24 hours
