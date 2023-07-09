@@ -8,7 +8,7 @@ import os
 
 def start_email_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(email_if_revision_due, 'interval', minutes=1) 
+    scheduler.add_job(email_if_revision_due, 'interval', hours=24) 
     scheduler.start()
 
 
