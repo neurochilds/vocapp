@@ -2,11 +2,13 @@ from fastapi import FastAPI, Request, Depends, HTTPException, Response, Form
 from auth import AuthHandler
 from schemas import AuthDetails, WordDetails, DeleteWord
 import string
-from helpers import clean_dict, update_box, days_hours_mins, send_email
+from helpers import clean_dict, update_box, days_hours_mins, start_email_scheduler
+from validate_email_address import validate_email
 
 from models import User, Word, engine
 from sqlmodel import SQLModel, Session, select
 from starlette.status import HTTP_403_FORBIDDEN, HTTP_401_UNAUTHORIZED
+from typing import Optional
 
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +16,16 @@ from fastapi.templating import Jinja2Templates
 import json
 from PyDictionary import PyDictionary
 from datetime import datetime, timedelta
+
+'''
+TO DO:
+- Implement unsubscribe function
+- Implement change email function
+- Change secret key and API to environment variables, upload to railway.app
+- Check it works with 1 min delay...if so, change to 24 hours
+- Change all cases of 'username' to 'email'
+'''
+
 
 
 SQLModel.metadata.create_all(engine)
@@ -24,6 +36,8 @@ templates = Jinja2Templates(directory="templates")
 
 dictionary = PyDictionary()
 auth_handler = AuthHandler()
+
+start_email_scheduler()
 
 
 @app.exception_handler(HTTP_403_FORBIDDEN)
@@ -44,7 +58,7 @@ def register_form(request: Request):
 
 
 @app.post('/register', status_code=201)
-def register(request: Request, username: str = Form(...), password: str = Form(...)):
+def register(request: Request, username: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), wants_updates: Optional[bool] = Form(False)):
     '''
     Passing AuthDetails as the param ensures that the recieved object matches our schema.
     If username is unique, adds new user to users.
@@ -52,11 +66,21 @@ def register(request: Request, username: str = Form(...), password: str = Form(.
     '''
     auth_details = AuthDetails(username=username, password=password)
 
+    if password != confirm_password:
+        error = "Passwords don't match"
+        return templates.TemplateResponse("register.html", {"request": request, "error": error})
+
+
     with Session(engine) as session:
         user = session.exec(select(User).where(User.username == auth_details.username)).first()
         if user:
             error = 'Username already taken'
             return templates.TemplateResponse("register.html", {"request": request, "error": error})
+        
+        if not validate_email(username):
+            error = 'Invalid email'
+            return templates.TemplateResponse("register.html", {"request": request, "error": error})
+
         
         letter_missing = not any(ch.isalpha() for ch in password)
         number_missing = not any(ch.isdigit() for ch in password)
@@ -68,7 +92,7 @@ def register(request: Request, username: str = Form(...), password: str = Form(.
 
         hashed_password = auth_handler.get_password_hash(auth_details.password)
 
-        user = User(username=auth_details.username, password_hash=hashed_password)
+        user = User(username=auth_details.username, password_hash=hashed_password, wants_updates=wants_updates)
         session.add(user)
         session.commit()
     return RedirectResponse(url='/login', status_code=303)
@@ -150,7 +174,7 @@ async def lookup_word(request: Request, word: str = Form(...), username = Depend
             return {"word": word, "definition": definition, "message": f"'{word}' is already in your list!"}
 
         # Add the word to the user's word list
-        new_word = Word(word=word, definition=json.dumps(definition), box_number=1, last_reviewed_date=datetime.utcnow(), next_review_date=(datetime.utcnow()+timedelta(days=1)), user_id=user.id)
+        new_word = Word(word=word, definition=json.dumps(definition), box_number=1, last_reviewed_date=datetime.utcnow(), next_review_date=(datetime.utcnow()+timedelta(minutes=1)), user_id=user.id)
         session.add(new_word)
         session.commit()
 
@@ -243,11 +267,27 @@ def delete(word: DeleteWord, username = Depends(auth_handler.auth_wrapper)):
        else:
            return {'delete_successful': False, 'error': 'User not found'}
        
-def check_all():
+
+@app.get('/emailpreference')
+def words(request: Request, username = Depends(auth_handler.auth_wrapper)):
     with Session(engine) as session:
-        users = session.exec(select(Word)).where(Word.next_review_date < datetime.utcnow())
-        if users:
-            for user in users:
-                user_data = session.exec(select(User).where(User.id == user.user_id))
-                email = user_data.email
-                send_email(email, subject='Words to revise', text_content='You have words to revise on Vocapp!')
+        user = session.exec(select(User).where(User.username == username)).first()
+        if user:
+            preference = user.wants_updates
+            return {'preference': preference, 'error': None}
+        return {'preference': preference, 'error': 'No user found'}
+        
+
+@app.post('/changepreference')
+def change_preference(username = Depends(auth_handler.auth_wrapper)):
+   with Session(engine) as session:
+       user = session.exec(select(User).where(User.username == username)).first()
+       if user:
+           old_preference = user.wants_updates
+           new_preference = not old_preference
+           user.wants_updates = new_preference
+           session.add(user)
+           session.commit()
+           return {'change_successful': True, 'error': None}
+       else:
+           return {'change_successful': False, 'error': 'USer not found'}

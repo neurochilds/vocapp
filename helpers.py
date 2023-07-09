@@ -1,17 +1,41 @@
 from datetime import datetime, timedelta
 from mailjet_rest import Client
+from apscheduler.schedulers.background import BackgroundScheduler
+from models import engine, Word, User
+from sqlmodel import Session, select, distinct
+import os
+
+
+def start_email_scheduler():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(email_if_revision_due, 'interval', minutes=1) 
+    scheduler.start()
+
+
+def email_if_revision_due():
+    print('checking if emails due')
+    with Session(engine) as session:
+        user_ids = session.exec(select(distinct(Word.user_id)).where(Word.next_review_date < datetime.utcnow())).all()
+        if user_ids:
+            for user_id in user_ids:
+                user = session.exec(select(User).where(User.id == user_id)).first()
+                if user.wants_updates:
+                    email = user.username
+                    send_email(email, subject='Words to revise', text_content='Hello!\n\nYou have words to revise on Vocapp!\n\nBest,\nVocapp')
+
 
 def send_email(recipient_email, subject, text_content):
-    api_key = '9cdb32e6feedab2d348d3fb7331614be'  # replace with your Mailjet API Key
-    api_secret = '09b789bb544798275ccc958b6d71a961'  # replace with your Mailjet Secret Key
+    print('sending email to', recipient_email)
+    api_key = os.getenv('API_KEY')
+    api_secret = os.getenv('API_SECRET')  
     mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 
     data = {
         'Messages': [
             {
                 "From": {
-                    "Email": "childsy123@gmail.com",  # replace with your sender email
-                    "Name": "Vocapp"  # replace with your sender name
+                    "Email": "vocapp.reminder@gmail.com", 
+                    "Name": "Vocapp"  
                 },
                 "To": [
                     {

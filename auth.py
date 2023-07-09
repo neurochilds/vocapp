@@ -22,7 +22,8 @@ Datetimw used for setting issue and expiry times of the jwt.
 class AuthHandler():
     # security = HTTPBearer()
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    secret = os.getenv('JWT_SECRET')
+    # secret = os.getenv('JWT_SECRET')
+    secret = 'SECRET'
 
     def get_password_hash(self, password):
         '''

@@ -5,6 +5,9 @@
         <form action="/register" method="post">
             <input type="text" name="username" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="confirm_password" placeholder="Confirm password" required>
+            <label for="email-updates">Receive Email Reminders:</label>
+            <input type="checkbox" name="email_updates" id="email-updates">
             <input type="submit" value="Register">
         </form>
         {% if error %}

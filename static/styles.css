@@ -91,6 +91,10 @@ body {
     cursor: pointer;
   }
   
+  input[type="checkbox"] {
+    margin-bottom: 1em;
+  }
+
   .part-of-speech {
     font-weight: bold;
     margin-top: 20px;
@@ -132,6 +136,23 @@ body {
     border: 1px solid #c497c0;
     cursor: default;
   }
+
+  #preference {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #change-preference {
+    flex: 0;
+    margin-bottom: 0em;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    max-height: 2em;
+    margin-top: 1em;
+  }
+  
   
   .words-info {
     margin-bottom: 0.5em;
