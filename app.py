@@ -173,7 +173,7 @@ async def lookup_word(request: Request, word: str = Form(...), username = Depend
             return {"word": word, "definition": definition, "message": f"'{word}' is already in your list!"}
 
         # Add the word to the user's word list
-        new_word = Word(word=word, definition=json.dumps(definition), box_number=1, last_reviewed_date=datetime.utcnow(), next_review_date=(datetime.utcnow()+timedelta(minutes=1)), user_id=user.id)
+        new_word = Word(word=word, definition=json.dumps(definition), box_number=1, last_reviewed_date=datetime.utcnow(), next_review_date=(datetime.utcnow()+timedelta(days=1)), user_id=user.id)
         session.add(new_word)
         session.commit()
 
