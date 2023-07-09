@@ -9,3 +9,5 @@ PyJWT
 uvicorn
 python-multipart
 psycopg2
+mailjet_rest
+APScheduler
