@@ -49,6 +49,20 @@ body {
     text-decoration: none;
     color: #e03ad5;
   }
+
+  .banner h1 a {
+    text-decoration: none;
+    color: #fddffc;
+    text-align: center;
+    text-shadow: 1.5px 1.5px 1.5px #a200ff;
+  }
+
+  .banner h1 a:hover {
+    text-decoration: none;
+    color: #fddffc;
+    text-align: center;
+    text-shadow: 1.5px 1.5px 1.5px #a200ff;
+  }
   
   .middle-container h1,
   .wide-middle-container h1 {

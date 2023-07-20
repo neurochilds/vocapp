@@ -46,9 +46,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     getWords().then(receivedWords => {
         words = receivedWords
-        console.log('words', words)
-        console.log('words.length', words.length)
-        
         nWords.innerHTML = (words.length - currentWordIndex) + ' words to revise'
     });
 
@@ -63,7 +60,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!currentWord) {
             console.log('No more words left!');
             getWordButton.disabled = true;
+            return;
         }
+
+        messageDiv.innerHTML = currentWord.word.length + ' letters'
 
         var definitionsPOS = JSON.parse(currentWord.definition)
 
@@ -97,12 +97,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var is_correct = false;
         var currentWord = words[currentWordIndex];
-        var userAnswer = userAnswerInput.value.trim();
+        var userAnswer = userAnswerInput.value.trim().toLowerCase();
+
+        var match = false;
+
+        // Check if words are perfect match
+        if (currentWord.word == userAnswer) {
+            console.log('perfect match')
+            match = true;
+
+        // Else, compare if they'd match as singular nouns
+        } else { 
+            var singularCurrentWord = nlp(currentWord.word).nouns().toSingular().out('text');
+            var singularUserAnswer = nlp(userAnswer).nouns().toSingular().out('text');
+            if (singularCurrentWord && (singularCurrentWord == singularUserAnswer)) {
+                console.log('singular match')
+                match = true;
+
+            // Else, compare if they'd match as infinitive verbs
+            } else {
+                var infinitiveCurrentWord = nlp(currentWord.word).verbs().toInfinitive().out('text');
+                var infinitiveUserAnswer = nlp(userAnswer).verbs().toInfinitive().out('text');
+                if (infinitiveCurrentWord && (infinitiveCurrentWord == infinitiveUserAnswer)) {
+                    console.log('infintive match')
+                    match = true;
+                }
+            }
+        }
     
         // Compare the user's answer with the correct word
-        if (userAnswer.toLowerCase() === currentWord.word.toLowerCase()) {
+        if (match) {
             is_correct = true;
-            messageDiv.innerHTML = "Correct! Good job!";
+            messageDiv.innerHTML = "Correct! The word was '" + currentWord.word + "' Well done.";
         } else {
             messageDiv.innerHTML = "Oops! The correct word was '" + currentWord.word + "'";
         }

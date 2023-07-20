@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function lookupWord() {
         lookupButton.disabled = true;
-        var word = document.getElementById("word").value;
+        var word = document.getElementById("word").value.trim();
         var requestUrl = '/lookup';
         fetch(requestUrl, {
             method: 'POST',

@@ -17,15 +17,6 @@ import json
 from PyDictionary import PyDictionary
 from datetime import datetime, timedelta
 
-'''
-TO DO:
-- Implement change email function
-- Change secret key and API to environment variables, upload to railway.app
-- Check it works with 1 min delay...if so, change to 24 hours
-- Change all cases of 'username' to 'email'
-'''
-
-
 
 SQLModel.metadata.create_all(engine)
 
