@@ -96,19 +96,20 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nWords) {getWordButton.disabled = false};
 
         var is_correct = false;
-        var currentWord = words[currentWordIndex];
+        var currentWordObj = words[currentWordIndex];
+        var currentWord = currentWordObj.word.toLowerCase();
         var userAnswer = userAnswerInput.value.trim().toLowerCase();
 
         var match = false;
 
         // Check if words are perfect match
-        if (currentWord.word == userAnswer) {
-            console.log('perfect match')
+        if (currentWord == userAnswer) {
+            console.log('perfect match');
             match = true;
 
         // Else, compare if they'd match as singular nouns
         } else { 
-            var singularCurrentWord = nlp(currentWord.word).nouns().toSingular().out('text');
+            var singularCurrentWord = nlp(currentWord).nouns().toSingular().out('text');
             var singularUserAnswer = nlp(userAnswer).nouns().toSingular().out('text');
             if (singularCurrentWord && (singularCurrentWord == singularUserAnswer)) {
                 console.log('singular match')
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Else, compare if they'd match as infinitive verbs
             } else {
-                var infinitiveCurrentWord = nlp(currentWord.word).verbs().toInfinitive().out('text');
+                var infinitiveCurrentWord = nlp(currentWord).verbs().toInfinitive().out('text');
                 var infinitiveUserAnswer = nlp(userAnswer).verbs().toInfinitive().out('text');
                 if (infinitiveCurrentWord && (infinitiveCurrentWord == infinitiveUserAnswer)) {
                     console.log('infintive match')
@@ -128,13 +129,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // Compare the user's answer with the correct word
         if (match) {
             is_correct = true;
-            messageDiv.innerHTML = "Correct! The word was '" + currentWord.word + "' Well done.";
+            messageDiv.innerHTML = "Correct! The word was '" + currentWord + "' Well done.";
         } else {
-            messageDiv.innerHTML = "Oops! The correct word was '" + currentWord.word + "'";
+            messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'";
         }
 
         // Update the SQL database depending on whether word was correct or not.
-        update(currentWord.word, currentWord.user_id, currentWord.box_number, is_correct);
+        update(currentWord, currentWordObj.user_id, currentWordObj.box_number, is_correct);
     
         // Move to the next word
         currentWordIndex++;
@@ -144,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Check if all words have been tested
         if (currentWordIndex == words.length) {
             getWordButton.disabled = true;
-            await sleep(2000); // Wait 2 seconds to ensure the user had time to read the correct/incorrect message
+            await sleep(3000); // Wait 2 seconds to ensure the user had time to read the correct/incorrect message
             messageDiv.innerHTML = "That's all for now!";
             wordDefinitionDiv.innerHTML = "";
         }
