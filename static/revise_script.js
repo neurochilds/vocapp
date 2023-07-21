@@ -129,13 +129,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // Compare the user's answer with the correct word
         if (match) {
             is_correct = true;
-            messageDiv.innerHTML = "Correct! The word was '" + currentWord + "' Well done.";
+            messageDiv.innerHTML = "Correct! The word was '" + currentWord + "'. Well done!";
         } else {
-            messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'";
+            messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'.";
         }
 
         // Update the SQL database depending on whether word was correct or not.
-        update(currentWord, currentWordObj.user_id, currentWordObj.box_number, is_correct);
+        update(currentWordObj.word, currentWordObj.user_id, currentWordObj.box_number, is_correct);
     
         // Move to the next word
         currentWordIndex++;
