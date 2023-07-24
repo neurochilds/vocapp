@@ -28,10 +28,12 @@ body {
   .wide-middle-container {
     margin: 0 auto;
     padding-top: 4em;
+    padding-left: 2em;
+    padding-right: 2em;
   }
   
   .middle-container {
-    width: 23em;
+    width: 25em;
   }
   
   .wide-middle-container {
