@@ -15,7 +15,7 @@ body {
     /* position: sticky;
     top: 0;
     z-index: 10; */
-    width: 100vw;
+    width: 100%;
     padding: 0.1em;
     color: #fddffc;
     background-image: linear-gradient(to bottom, #e5ff00 0%, #00fff2 50%, #ff00d4 100%);
@@ -254,5 +254,9 @@ body {
     .buttons button {
       flex-basis: 100%;
       margin-bottom: 0.5em;
+    }
+    
+    .wide-middle-container {
+      width: 100%;
     }
   }
