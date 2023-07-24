@@ -27,7 +27,7 @@ body {
   .middle-container,
   .wide-middle-container {
     margin: 0 auto;
-    padding-top: 4em;
+    padding: 4em 0.25em 1em 0.25em;
   }
   
   .middle-container {
