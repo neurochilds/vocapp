@@ -10,15 +10,6 @@ body {
   * {
     box-sizing: border-box;
   }
-
-  .banner-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
   
   .banner {
     width: 100%;
@@ -45,6 +36,8 @@ body {
   
   .wide-middle-container {
     width: 30em;
+    max-width: 100%;
+    overflow-x: auto;
   }
   
   .middle-container a,
