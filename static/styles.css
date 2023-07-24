@@ -4,6 +4,7 @@ body {
     padding: 0;
     background-color: #fddffc;
     color: #000000;
+    width: 100vw;
   }
   
   * {
@@ -11,6 +12,9 @@ body {
   }
   
   .banner {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     width: 100vw;
     padding: 0.1em;
     color: #fddffc;
@@ -99,6 +103,7 @@ body {
     background-color: #b654ae;
     border: 1px solid #95448f;
     transition: 0.1s ease-in-out;
+    border-radius: 2px;
   }
   
   .middle-container input[type="submit"]:hover,
