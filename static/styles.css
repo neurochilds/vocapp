@@ -12,9 +12,9 @@ body {
   }
   
   .banner {
-    position: sticky;
+    /* position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 10; */
     width: 100vw;
     padding: 0.1em;
     color: #fddffc;
@@ -196,8 +196,8 @@ body {
     font-size: 0.9em;
     text-align: center;
     border-radius: 15px;
-    overflow: hidden;
     margin-bottom: 4em;
+    overflow: auto;
   }
   
   .wide-middle-container th {
