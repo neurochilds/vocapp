@@ -108,6 +108,7 @@ body {
     transition: 0.1s ease-in-out;
     border-radius: 2px;
     font-size: 16px;
+    font-weight: bold;
   }
   
   .middle-container input[type="submit"]:hover,
@@ -212,7 +213,6 @@ body {
   }
   
   .wide-middle-container td {
-    border-top: 1px solid #dddddd;
     padding: 10px;
     position: relative;
   }
