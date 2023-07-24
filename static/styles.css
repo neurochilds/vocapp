@@ -27,21 +27,20 @@ body {
   .middle-container,
   .wide-middle-container {
     margin: 0 auto;
-    width: 32em;
     padding-top: 4em;
-    max-width: 100%;
-    overflow-x: auto;
   }
   
   .middle-container {
-    padding-left: 4em;
-    padding-right: 4em;
+    width: 24em;
+    max-width: 100%;
   }
   
   .wide-middle-container {
-    padding-left: 1em;
-    padding-right: 1em;
+    width: 30em;
+    max-width: 100%;
+    overflow-x: auto;
   }
+
   
   .middle-container a,
   .wide-middle-container a {
