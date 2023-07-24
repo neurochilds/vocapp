@@ -11,7 +11,7 @@ body {
   }
   
   .banner {
-    width: 100%;
+    width: 100vw;
     padding: 0.1em;
     color: #fddffc;
     background-image: linear-gradient(to bottom, #e5ff00 0%, #00fff2 50%, #ff00d4 100%);
@@ -88,6 +88,9 @@ body {
   
   .middle-container input[type="submit"],
   .register-button {
+    appearance: none; /* This can help remove default styles */
+    -webkit-appearance: none; /* This is for Safari */
+    -moz-appearance: none;  /* This is for Firefox */
     display: block;
     width: 100%;
     padding: 1em;
@@ -240,4 +243,11 @@ body {
     line-height: 1.5;
     font-size: 1.1em;
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .buttons button {
+      flex-basis: 100%;
+      margin-bottom: 0.5em;
+    }
   }
