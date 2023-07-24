@@ -84,6 +84,7 @@ body {
     background-color: rgb(255, 241, 255);
     border: 1px solid rgb(248, 198, 248);
     font-size: 16px;
+    border-radius: 2px;
   }
   
   .middle-container input[type="text"]:focus,
@@ -99,13 +100,14 @@ body {
     -moz-appearance: none;  /* This is for Firefox */
     display: block;
     width: 100%;
-    padding: 1em;
+    padding: 0.75em;
     margin-bottom: 10px;
     color: white;
     background-color: #b654ae;
     border: 1px solid #95448f;
     transition: 0.1s ease-in-out;
     border-radius: 2px;
+    font-size: 16px;
   }
   
   .middle-container input[type="submit"]:hover,
