@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let message = ''
         let wants_emails = preference
         if (wants_emails) {
-            message = 'You are currently subscribed to email updates';
+            message = 'You are subscribed to email updates';
         } else {
-            message = 'You are not currently subscribed to email updates';
+            message = 'You are not subscribed to email updates';
         }
         document.getElementById('email-preference').innerHTML = message;
     });
