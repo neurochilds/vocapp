@@ -28,16 +28,17 @@ body {
   .wide-middle-container {
     margin: 0 auto;
     padding-top: 4em;
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
   }
   
   .middle-container {
-    width: 25em;
+    width: 24em;
+    max-width: 100%;
   }
   
   .wide-middle-container {
-    width: 30em;
+    width: 31em;
     max-width: 100%;
     overflow-x: auto;
   }
