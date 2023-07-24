@@ -27,7 +27,7 @@ body {
   .middle-container,
   .wide-middle-container {
     margin: 0 auto;
-    padding: 4em 0.25em 2em 0.25em;
+    padding: 30px 10px 30px 10px;
   }
   
   .middle-container {
@@ -246,7 +246,7 @@ body {
   }
   
   .intro {
-    margin-bottom: 3em;
+    margin-bottom: 30px;
     line-height: 1.5;
     font-size: 1.1em;
     text-align: center;
