@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Vocapp</title>
     <link rel="stylesheet" href="../static/styles.css">
     {% block script %}{% endblock %}
 </head>
 <body>
-    <div class="banner"><h1><a href="/">Vocapp</a></h1></div>
+    <div class="banner-wrapper">
+        <div class="banner"><h1><a href="/">Vocapp</a></h1></div>
+    </div>
     {% block main %}{% endblock %}
 </body>
 </html>
