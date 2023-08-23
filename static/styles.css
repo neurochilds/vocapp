@@ -146,6 +146,11 @@ body {
     transition: 0.1s ease-in-out;
     border-radius: 2px;
   }
+
+  .buttons.four-buttons button {
+    padding: 4px;
+    max-width: calc(28% - 15px);
+  }
   
   .buttons button:hover {
     color: white;

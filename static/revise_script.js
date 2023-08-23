@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", function() {
         var input = document.getElementById("user-answer").value;
         if (input && nWords) {
             submitAnswerButton.disabled = false;
-            notSureButton.disabled = false;
         } else {
             submitAnswerButton.disabled = true;
-            notSureButton.disabled = true;
         }
     });
 
@@ -61,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function getWord() {
+        notSureButton.disabled = false;
         // Clear previous definition
         getWordButton.disabled = true;
         wordDefinitionDiv.innerHTML = "";
