@@ -44,6 +44,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    userAnswerInput.addEventListener("keydown", function(event) {
+        if (event.key == 'Enter') {
+            checkAnswer();
+        }
+    });
+
     getWords().then(receivedWords => {
         words = receivedWords
         nWords.innerHTML = (words.length - currentWordIndex) + ' words to revise'
