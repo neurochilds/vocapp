@@ -1,6 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+    var wordDefinitionDiv = document.getElementById("word-definition");
+    var userAnswerInput = document.getElementById("user-answer");
+    var getWordButton = document.getElementById('get-word');
+    var submitAnswerButton = document.getElementById("submit-answer");
+    var notSureButton = document.getElementById("not-sure");
+    var messageDiv = document.getElementById("message");
+    var nWords = document.getElementById("n-words");
+    var currentWordIndex = 0;
+    var words;
+
+    submitAnswerButton.disabled = true;
+    notSureButton.disabled = true;
+
     async function getWords() {
-        let words;
         await fetch('/getwords', {
             method: 'GET',
             headers: {
@@ -24,28 +37,20 @@ document.addEventListener("DOMContentLoaded", function() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    var wordDefinitionDiv = document.getElementById("word-definition");
-    var userAnswerInput = document.getElementById("user-answer");
-    var getWordButton = document.getElementById('get-word');
-    var submitAnswerButton = document.getElementById("submit-answer");
-    var messageDiv = document.getElementById("message");
-    var nWords = document.getElementById("n-words");
-    var currentWordIndex = 0;
-    var words;
-
-    submitAnswerButton.disabled = true;
-
     userAnswerInput.addEventListener("keyup", function() {
         var input = document.getElementById("user-answer").value;
         if (input && nWords) {
             submitAnswerButton.disabled = false;
+            notSureButton.disabled = false;
         } else {
             submitAnswerButton.disabled = true;
+            notSureButton.disabled = true;
         }
     });
 
     userAnswerInput.addEventListener("keydown", function(event) {
-        if (event.key == 'Enter') {
+        var input = document.getElementById("user-answer").value;
+        if (event.key == 'Enter' && input) {
             checkAnswer();
         }
     });
@@ -94,10 +99,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Function to check the user's answer
-    async function checkAnswer() {
+    async function checkAnswer(skip=false) {
         // Disable the ability to submit an answer until a new word definition is fetched
         submitAnswerButton.disabled = true;
-
+        notSureButton.disabled = true;
+        
         // Unless this is the last word, reenable the getWordButton 
         if (nWords) {getWordButton.disabled = false};
 
@@ -108,36 +114,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var match = false;
 
-        // Check if words are perfect match
-        if (currentWord == userAnswer) {
-            console.log('perfect match');
-            match = true;
-
-        // Else, compare if they'd match as singular nouns
-        } else { 
-            var singularCurrentWord = nlp(currentWord).nouns().toSingular().out('text');
-            var singularUserAnswer = nlp(userAnswer).nouns().toSingular().out('text');
-            if (singularCurrentWord && (singularCurrentWord == singularUserAnswer)) {
-                console.log('singular match')
+        // If user gave an answer
+        if (!skip) {
+            // Check if words are perfect match
+            if (currentWord == userAnswer) {
+                console.log('perfect match');
                 match = true;
 
-            // Else, compare if they'd match as infinitive verbs
-            } else {
-                var infinitiveCurrentWord = nlp(currentWord).verbs().toInfinitive().out('text');
-                var infinitiveUserAnswer = nlp(userAnswer).verbs().toInfinitive().out('text');
-                if (infinitiveCurrentWord && (infinitiveCurrentWord == infinitiveUserAnswer)) {
-                    console.log('infintive match')
+            // Else, compare if they'd match as singular nouns
+            } else { 
+                var singularCurrentWord = nlp(currentWord).nouns().toSingular().out('text');
+                var singularUserAnswer = nlp(userAnswer).nouns().toSingular().out('text');
+                if (singularCurrentWord && (singularCurrentWord == singularUserAnswer)) {
+                    console.log('singular match')
                     match = true;
+
+                // Else, compare if they'd match as infinitive verbs
+                } else {
+                    var infinitiveCurrentWord = nlp(currentWord).verbs().toInfinitive().out('text');
+                    var infinitiveUserAnswer = nlp(userAnswer).verbs().toInfinitive().out('text');
+                    if (infinitiveCurrentWord && (infinitiveCurrentWord == infinitiveUserAnswer)) {
+                        console.log('infintive match')
+                        match = true;
+                    }
                 }
             }
-        }
-    
-        // Compare the user's answer with the correct word
-        if (match) {
-            is_correct = true;
-            messageDiv.innerHTML = "Correct! The word was '" + currentWord + "'. Well done!";
+        
+            // Compare the user's answer with the correct word
+            if (match) {
+                is_correct = true;
+                messageDiv.innerHTML = "Correct! The word was '" + currentWord + "'. Well done!";
+            } else {
+                messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'.";
+            }
+        
+        // If user skipped giving an answer
         } else {
-            messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'.";
+            messageDiv.innerHTML = "The correct word was '" + currentWord + "'";
         }
 
         // Update the SQL database depending on whether word was correct or not.
@@ -151,12 +164,16 @@ document.addEventListener("DOMContentLoaded", function() {
         // Check if all words have been tested
         if (currentWordIndex == words.length) {
             getWordButton.disabled = true;
-            await sleep(3000); // Wait 2 seconds to ensure the user had time to read the correct/incorrect message
+            await sleep(3000); // Wait 3 seconds to ensure the user had time to read the correct/incorrect message
             messageDiv.innerHTML = "That's all for now!";
             wordDefinitionDiv.innerHTML = "";
         }
         // Clear the user's answer
         userAnswerInput.value = "";
+    }
+
+    async function skipWord() {
+        await checkAnswer(skip=true);
     }
 
     function update(word, userId, currentBox, isCorrect) {
@@ -205,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Add event listeners to buttons
     submitAnswerButton.addEventListener("click", checkAnswer);
+    notSureButton.addEventListener("click", skipWord)
     document.getElementById('logout-button').addEventListener("click", logout);
     getWordButton.addEventListener("click", getWord);
 });
