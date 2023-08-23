@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // If user skipped giving an answer
         } else {
-            messageDiv.innerHTML = "The correct word was '" + currentWord + "'";
+            messageDiv.innerHTML = "The correct word was '" + currentWord + "'.";
         }
 
         // Update the SQL database depending on whether word was correct or not.
