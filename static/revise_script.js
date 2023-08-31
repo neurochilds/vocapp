@@ -102,6 +102,11 @@ document.addEventListener("DOMContentLoaded", function() {
         // Disable the ability to submit an answer until a new word definition is fetched
         submitAnswerButton.disabled = true;
         notSureButton.disabled = true;
+
+        // When the function is added to button as event listener, the event is assigned as the value of the first argument
+        if (skip instanceof Event) {
+            skip = false;
+        }
         
         // Unless this is the last word, reenable the getWordButton 
         if (nWords) {getWordButton.disabled = false};
