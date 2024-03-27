@@ -89,8 +89,8 @@ def update_box(current_box: int, is_correct: bool):
     elif not is_correct: 
         new_box = current_box + REDUCE_BOX[current_box]
     else:
-        # Current box does not change as it is either cannot go any lower or higher
-        pass
+        # Current box does not change as it either cannot go any lower or higher
+        new_box = current_box
 
     last_reviewed_date = datetime.utcnow()
     next_review_date = datetime.utcnow() + timedelta(days=NEXT_INTERVAL[new_box])
