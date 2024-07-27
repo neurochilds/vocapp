@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var notSureButton = document.getElementById("not-sure");
     var messageDiv = document.getElementById("message");
     var nWords = document.getElementById("n-words");
+    var letter_counter_locked = true;
     var currentWordIndex = 0;
     var words;
 
@@ -37,9 +38,10 @@ document.addEventListener("DOMContentLoaded", function() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    // lock it once word correctly guessed, unlock again once 'get_word' called
     function updateMessage() {
-        if (words && words[currentWordIndex]) {
-            var inputLength = userAnswerInput.value.length;
+        if (words && words[currentWordIndex] && !letter_counter_locked) {
+            var inputLength = userAnswerInput.value.trim().length;
             var totalLength = words[currentWordIndex].word.length;
             messageDiv.innerHTML = inputLength + '/' + totalLength + ' letters';
         }
@@ -83,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         messageDiv.innerHTML = currentWord.word.length + ' letters'
+        letter_counter_locked = false;
 
         var definitionsPOS = JSON.parse(currentWord.definition)
 
@@ -157,13 +160,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (match) {
                 is_correct = true;
                 messageDiv.innerHTML = "Correct! The word was '" + currentWord + "'. Well done!";
+                letter_counter_locked = true;
             } else {
                 messageDiv.innerHTML = "Oops! The correct word was '" + currentWord + "'. You said '" + userAnswer + "'.";
+                letter_counter_locked = true
             }
         
         // If user skipped giving an answer
         } else {
             messageDiv.innerHTML = "The correct word was '" + currentWord + "'.";
+            letter_counter_locked = true
         }
 
         // Update the SQL database depending on whether word was correct or not.
