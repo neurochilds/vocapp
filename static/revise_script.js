@@ -37,13 +37,22 @@ document.addEventListener("DOMContentLoaded", function() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    function updateMessage() {
+        if (words && words[currentWordIndex]) {
+            var inputLength = userAnswerInput.value.length;
+            var totalLength = words[currentWordIndex].word.length;
+            messageDiv.innerHTML = inputLength + '/' + totalLength + ' letters';
+        }
+    }
+
     userAnswerInput.addEventListener("keyup", function() {
-        var input = document.getElementById("user-answer").value;
+        var input = userAnswerInput.value;
         if (input && nWords) {
             submitAnswerButton.disabled = false;
         } else {
             submitAnswerButton.disabled = true;
         }
+        updateMessage();
     });
 
     userAnswerInput.addEventListener("keydown", function(event) {
