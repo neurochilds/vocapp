@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // lock it once word correctly guessed, unlock again once 'get_word' called
     function updateMessage() {
         if (words && words[currentWordIndex] && !letter_counter_locked) {
-            var inputLength = userAnswerInput.value.trim().length;
+            var inputLength = userAnswerInput.value.trim().replace(/[^a-zA-Z]/g, '').length;
             var totalLength = words[currentWordIndex].word.length;
             messageDiv.innerHTML = inputLength + '/' + totalLength + ' letters';
         }
