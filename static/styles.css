@@ -259,6 +259,14 @@ body {
     text-align: center;
   }
 
+  .quote {
+    margin-bottom: 30px;
+    line-height: 1.5;
+    font-size: 1.1em;
+    text-align: center;
+    opacity:0.6 ;
+  }
+
   @media (max-width: 768px) {
     .buttons button {
       flex-basis: 100%;
