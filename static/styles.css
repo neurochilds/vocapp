@@ -31,7 +31,7 @@ body {
   }
   
   .middle-container {
-    width: 24em;
+    width: 25em;
     max-width: 100%;
   }
   
@@ -255,14 +255,14 @@ body {
   .intro {
     margin-bottom: 30px;
     line-height: 1.5;
-    font-size: 1.1em;
+    font-size: 1em;
     text-align: center;
   }
 
   .quote {
     margin-bottom: 30px;
     line-height: 1.5;
-    font-size: 1.1em;
+    font-size: 1em;
     text-align: center;
     opacity:0.6 ;
   }
