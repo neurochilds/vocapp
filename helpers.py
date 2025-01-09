@@ -21,7 +21,16 @@ def email_if_revision_due():
                 user = session.exec(select(User).where(User.id == user_id)).first()
                 if user.wants_updates:
                     email = user.username
-                    send_email(email, subject='Words to revise', text_content='Hello!\n\nYou have words to revise on Vocapp!\n\nBest,\nVocapp')
+                    html_content = '''
+                    <html>
+                    <body>
+                        <p>Hello!</p>
+                        <p>You have words to revise on <a href="https://vocapp.tomchilds.com/" target="_blank">Vocapp</a>!</p>
+                        <p>Best,<br>Vocapp</p>
+                    </body>
+                    </html>
+                    '''
+                    send_email(email, subject='Words to revise', html_content=html_content)
 
 
 def send_email(recipient_email, subject, text_content):
