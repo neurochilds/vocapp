@@ -65,7 +65,7 @@ def clean_dict(response: tuple):
     '''
 
     categories = ''
-    definition = []
+    definitions_list = []
 
     for category in response[0]:
         categories += category + ' '
@@ -73,11 +73,11 @@ def clean_dict(response: tuple):
 
     for index, definition in enumerate(definitions):
         if index == 2:
-            definition.append(definition.split('is also', 1)[1])
+            definitions_list.append(definition.split('is also', 1)[1].strip())
             break
-        definition.append(definition.split('is', 1)[1])
+        definitions_list.append(definition.split('is', 1)[1].strip())
 
-    return {categories: definition}
+    return {categories: definitions_list}
 
 
 def update_box(current_box: int, is_correct: bool):
