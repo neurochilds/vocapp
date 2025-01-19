@@ -14,7 +14,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import json
-from PyDictionary import PyDictionary
+from PyMultiDictionary import MultiDictionary
 from datetime import datetime, timedelta
 
 
@@ -24,7 +24,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static") # mount static files
 templates = Jinja2Templates(directory="templates")
 
-dictionary = PyDictionary()
+dictionary = MultiDictionary()
 auth_handler = AuthHandler()
 
 start_email_scheduler()
@@ -146,13 +146,13 @@ async def lookup_word(request: Request, word: str = Form(...), username = Depend
         return {"word": word, "definition": None, "message": "Query must be a single word"}
 
     word = word.title()
-    definition = dictionary.meaning(word)
+    response = dictionary.meaning('en', word)
 
-    if definition == None:
+    if response[1] == '':
         return {"word": word, "definition": None, "message": f"No results found for '{word}'"}
     
-    # Limits to max 5 definitions per part of speech (e.g. per noun, verb, etc.)
-    definition = clean_dict(definition)
+    # Tidies the response to show only the grammatical category and definitions.
+    definition = clean_dict(response)
 
     # Get the user's data
     with Session(engine) as session:

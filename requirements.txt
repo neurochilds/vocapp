@@ -3,7 +3,7 @@ passlib
 sqlmodel
 starlette
 jinja2
-PyDictionary
+PyMultiDictionary
 pydantic
 PyJWT
 uvicorn

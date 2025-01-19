@@ -33,7 +33,7 @@ def email_if_revision_due():
                     send_email(email, subject='Words to revise', html_content=html_content)
 
 
-def send_email(recipient_email, subject, text_content):
+def send_email(recipient_email, subject, html_content):
     print('sending email to', recipient_email)
     api_key = os.getenv('API_KEY')
     api_secret = os.getenv('API_SECRET')  
@@ -52,29 +52,33 @@ def send_email(recipient_email, subject, text_content):
                     }
                 ],
                 "Subject": subject,
-                "TextPart": text_content,
+                "TextPart": html_content,
             }
         ]
     }
     return mailjet.send.create(data=data)
 
 
-def clean_dict(dictionary: dict):
+def clean_dict(response: tuple):
     ''''
-    Limits the dictionary to a maximum of 5 definitions for each part of speech (e.g., verb, noun)
+    Formats the response from PyMultiDictionary to neatly show just the grammatical category and definitions.
     '''
-    clean_dict = {}
-    for pos in dictionary.keys():
-        clean_dict[pos] = []
-        count = 0
-        for definition in dictionary[pos]:
-            if definition[0] == '(':
-                continue
-            clean_dict[pos].append(definition)
-            count += 1
-            if count == 5:
-                break
-    return clean_dict
+
+    categories = ''
+    definition = ''
+
+    for category in response[0]:
+        categories += category + ' '
+
+        definitions = response[1].split('.')[:-1]
+
+    for index, definition in enumerate(definitions):
+        if index == 2:
+            definition += f' {index + 1}.{definition.split('is also', 1)[1]}'
+            break
+        definition += f' {index + 1}.{definition.split('is', 1)[1]}'
+
+    return {categories: definition}
 
 
 def update_box(current_box: int, is_correct: bool):
