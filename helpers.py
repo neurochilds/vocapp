@@ -64,13 +64,14 @@ def clean_dict(response: tuple):
     Formats the response from PyMultiDictionary to neatly show just the grammatical category and definitions.
     '''
 
+    # Gets the grammatical category (e.g., Noun, Adjective, Verb)
     categories = ''
-    definitions_list = []
-
     for category in response[0]:
         categories += category + ' '
-        definitions = response[1].split('.')[:-1]
-
+    
+    # Forms a list of each definition
+    definitions_list = []
+    definitions = response[1].split('.')[:-1]
     for index, definition in enumerate(definitions):
         if index == 2:
             definitions_list.append(definition.split('is also', 1)[1].strip())
