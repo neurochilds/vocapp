@@ -65,18 +65,17 @@ def clean_dict(response: tuple):
     '''
 
     categories = ''
-    definition = ''
+    definition = []
 
     for category in response[0]:
         categories += category + ' '
-
         definitions = response[1].split('.')[:-1]
 
     for index, definition in enumerate(definitions):
         if index == 2:
-            definition += f' {index + 1}.{definition.split('is also', 1)[1]}'
+            definition.append(definition.split('is also', 1)[1])
             break
-        definition += f' {index + 1}.{definition.split('is', 1)[1]}'
+        definition.append(definition.split('is', 1)[1])
 
     return {categories: definition}
 
