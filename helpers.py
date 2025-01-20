@@ -21,6 +21,14 @@ def email_if_revision_due():
                 user = session.exec(select(User).where(User.id == user_id)).first()
                 if user.wants_updates:
                     email = user.username
+
+                    text_content = '''
+                    Hello!\n\n
+                    You have words to revise on Vocapp!\n\n
+                    Best,\n
+                    Vocapp
+                    '''
+
                     html_content = '''
                     <html>
                     <body>
@@ -30,10 +38,11 @@ def email_if_revision_due():
                     </body>
                     </html>
                     '''
-                    send_email(email, subject='Words to revise', html_content=html_content)
+
+                    send_email(email, subject='Words to revise', text_content=text_content, html_content=html_content)
 
 
-def send_email(recipient_email, subject, html_content):
+def send_email(recipient_email, subject, text_content, html_content):
     print('sending email to', recipient_email)
     api_key = os.getenv('API_KEY')
     api_secret = os.getenv('API_SECRET')  
@@ -52,7 +61,8 @@ def send_email(recipient_email, subject, html_content):
                     }
                 ],
                 "Subject": subject,
-                "TextPart": html_content,
+                "TextPart": text_content,
+                "HTMLPart": html_content
             }
         ]
     }
